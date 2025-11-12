@@ -1,0 +1,194 @@
+<ion-header [translucent]="true" class="uber-header">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="header-title">
+      <ion-icon name="navigate" class="pulse-icon"></ion-icon>
+      Localização
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleMapStyle()" fill="clear" color="light">
+        <ion-icon [name]="isSatelliteView ? 'map' : 'map-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="uber-content">
+  <!-- Mapa em Destaque -->
+  <div class="map-container" #mapContainer>
+    <div id="map" class="map"></div>
+    
+    <!-- Botão de Localização Centralizada -->
+    <div class="floating-controls">
+      <ion-button (click)="centerToUserLocation()" class="location-btn" color="light" fill="solid">
+        <ion-icon name="navigate"></ion-icon>
+      </ion-button>
+      
+      <ion-button (click)="zoomIn()" class="zoom-btn" color="light" fill="solid">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+      
+      <ion-button (click)="zoomOut()" class="zoom-btn" color="light" fill="solid">
+        <ion-icon name="remove"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Indicador de Rastreamento -->
+    <div *ngIf="isTracking" class="tracking-indicator">
+      <ion-chip color="success" class="pulse-chip">
+        <ion-icon name="pulse" class="pulse-icon"></ion-icon>
+        <ion-label>Rastreando</ion-label>
+      </ion-chip>
+    </div>
+  </div>
+
+  <!-- Painel Inferior Deslizante -->
+  <div class="bottom-sheet" [class.sheet-expanded]="isSheetExpanded">
+    <!-- Alça do Bottom Sheet -->
+    <div class="sheet-handle" (click)="toggleSheet()">
+      <div class="handle-bar"></div>
+    </div>
+
+    <!-- Conteúdo do Bottom Sheet -->
+    <div class="sheet-content">
+      
+      <!-- Estado de Busca por Localização -->
+      <div *ngIf="!currentLocation && !isLoading" class="location-search">
+        <ion-icon name="navigate-outline" class="search-icon"></ion-icon>
+        <h3>Encontrando sua localização</h3>
+        <p>Estamos determinando sua posição atual</p>
+        <ion-button expand="block" color="primary" (click)="getCurrentLocation()" class="find-btn">
+          <ion-icon slot="start" name="locate"></ion-icon>
+          Encontrar Minha Localização
+        </ion-button>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="isLoading" class="loading-state">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+        <h3>Obtendo localização...</h3>
+        <p>Isso pode levar alguns segundos</p>
+      </div>
+
+      <!-- Localização Encontrada -->
+      <div *ngIf="currentLocation && !isLoading" class="location-found">
+        
+        <!-- Cabeçalho com Endereço -->
+        <div class="address-header">
+          <ion-icon name="pin" color="primary"></ion-icon>
+          <div class="address-info">
+            <h3>Sua Localização Atual</h3>
+            <p *ngIf="currentAddress">{{ currentAddress }}</p>
+            <p *ngIf="!currentAddress" class="coordinates">
+              {{ formatCoordinate(currentLocation.latitude) }}, {{ formatCoordinate(currentLocation.longitude) }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Cards de Informações -->
+        <ion-grid class="info-grid">
+          <ion-row>
+            <!-- Precisão -->
+            <ion-col size="6">
+              <ion-card class="info-card">
+                <ion-card-content>
+                  <ion-icon name="speedometer" color="primary"></ion-icon>
+                  <h4>Precisão</h4>
+                  <p class="value">{{ formatAccuracy(currentLocation.accuracy) }}</p>
+                  <ion-badge [color]="currentLocation.accuracy < 20 ? 'success' : 'warning'">
+                    {{ currentLocation.accuracy < 20 ? 'Alta' : 'Média' }}
+                  </ion-badge>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+
+            <!-- Velocidade -->
+            <ion-col size="6">
+              <ion-card class="info-card" *ngIf="currentLocation.speed && currentLocation.speed > 0">
+                <ion-card-content>
+                  <ion-icon name="car" color="secondary"></ion-icon>
+                  <h4>Velocidade</h4>
+                  <p class="value">{{ formatSpeed(currentLocation.speed) }}</p>
+                  <ion-badge color="medium">Em movimento</ion-badge>
+                </ion-card-content>
+              </ion-card>
+
+              
+              <!-- Altitude -->
+              <ion-card class="info-card" *ngIf="currentLocation.altitude">
+                <ion-card-content>
+                  <ion-icon name="cellular" color="tertiary"></ion-icon>
+                  <h4>Altitude</h4>
+                  <p class="value">{{ currentLocation.altitude?.toFixed(1) }}m</p>
+                  <ion-badge color="medium">Nível do mar</ion-badge>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- Controles de Ação -->
+        <div class="action-buttons">
+          <ion-button 
+            expand="block" 
+            [color]="isTracking ? 'danger' : 'success'" 
+            (click)="isTracking ? stopTracking() : startTracking()" 
+            class="action-btn">
+            <ion-icon slot="start" [name]="isTracking ? 'stop-circle' : 'play-circle'"></ion-icon>
+            {{ isTracking ? 'Parar Rastreamento' : 'Iniciar Rastreamento' }}
+          </ion-button>
+        </div>
+
+        <!-- Detalhes Expandidos -->
+        <div *ngIf="isSheetExpanded" class="expanded-details">
+          <ion-list lines="none" class="details-list">
+            <ion-item>
+              <ion-icon name="time" slot="start" color="medium"></ion-icon>
+              <ion-label>
+                <p>Última Atualização</p>
+                <h3>{{ formatTimestamp(currentLocation.timestamp) }}</h3>
+              </ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon name="compass" slot="start" color="medium"></ion-icon>
+              <ion-label>
+                <p>Direção</p>
+                <h3>{{ formatHeading(currentLocation.heading) }}</h3>
+              </ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon name="stats-chart" slot="start" color="medium"></ion-icon>
+              <ion-label>
+                <p>Localizações Obtidas</p>
+                <h3>{{ locationCount }}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </div>
+
+      <!-- Estado de Erro -->
+      <div *ngIf="locationError && !isLoading" class="error-state">
+        <ion-icon name="warning" color="danger"></ion-icon>
+        <h3>Erro de Localização</h3>
+        <p>{{ locationError }}</p>
+        <ion-button expand="block" color="primary" (click)="requestPermissions()" fill="outline">
+          <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+          Verificar Permissões
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Toast para feedback -->
+<ion-toast
+  [isOpen]="showToast"
+  [message]="toastMessage"
+  [duration]="2000"
+  (didDismiss)="showToast = false">
+</ion-toast>

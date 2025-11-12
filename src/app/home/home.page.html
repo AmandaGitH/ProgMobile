@@ -1,0 +1,162 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Galeria</ion-title>
+    
+    <!-- Controle da Lanterna no Header -->
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="toggleFlash()" [color]="isFlashOn ? 'warning' : 'medium'">
+        <ion-icon [name]="isFlashOn ? 'flash' : 'flash-off-outline'" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Status da Lanterna -->
+  <div class="flash-status">
+    <ion-card [color]="isFlashOn ? 'warning' : 'light'">
+      <ion-card-header class="flash-header">
+        <ion-text>
+          <h3>
+            <ion-icon [name]="isFlashOn ? 'flash' : 'flash-off-outline'" 
+                     [color]="isFlashOn ? 'dark' : 'medium'"></ion-icon>
+            {{ isFlashOn ? 'Lanterna Ligada' : 'Controle de Lanterna' }}
+          </h3>
+        </ion-text>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Status atual -->
+        <div class="status-info">
+          <ion-text [color]="flashError ? 'danger' : 'success'">
+            <p><strong>Status:</strong> {{ flashError || flashMode }}</p>
+          </ion-text>
+          
+          <ion-text color="medium" *ngIf="!flashError">
+            <small>
+              {{ isFlashOn ? 
+                'A lanterna está ligada.' : 
+                'A lanterna está desligada.' 
+              }}
+            </small>
+          </ion-text>
+        </div>
+        
+        <!-- Controles -->
+        <div class="flash-controls">
+          <ion-toggle 
+            [checked]="isFlashOn" 
+            (ionChange)="toggleFlash()"
+            justify="space-between">
+            <ion-label>Ativar/Desativar Lanterna</ion-label>
+          </ion-toggle>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <ion-button 
+      expand="block" 
+      color="primary" 
+      (click)="takePhotoWithFlash()"
+      [disabled]="isTakingPhoto">
+      <ion-icon slot="start" name="camera-outline"></ion-icon>
+      {{ isFlashOn ? 'Tirar Foto com Flash' : 'Tirar Foto' }}
+    </ion-button>
+    
+    <ion-button 
+      expand="block" 
+      color="secondary" 
+      (click)="takePhotoFromGallery()"
+      [disabled]="isTakingPhoto">
+      <ion-icon slot="start" name="images-outline"></ion-icon>
+      Escolher da Galeria
+    </ion-button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <ion-text color="medium">Carregando galeria...</ion-text>
+  </div>
+
+  <div *ngIf="isTakingPhoto" class="loading-container">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <ion-text color="medium">Processando imagem...</ion-text>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div *ngIf="!isLoading && images.length > 0" class="gallery-section">
+    <ion-text color="medium">
+      <h2>Suas Fotos ({{ images.length }})</h2>
+    </ion-text>
+    
+    <ion-grid class="gallery-grid">
+      <ion-row>
+        <ion-col 
+          size="6" 
+          size-md="4" 
+          size-lg="3" 
+          *ngFor="let image of images">
+          <ion-card class="image-card">
+            <div class="image-container" (click)="openImage(image)">
+              <img 
+                [src]="image.webViewPath" 
+                [alt]="'Foto tirada em ' + getFormattedDate(image.date)"
+                loading="lazy"
+                class="gallery-image" />
+              
+              <div class="image-overlay">
+                <ion-button 
+                  fill="clear" 
+                  color="light" 
+                  size="small"
+                  (click)="$event.stopPropagation(); confirmDelete(image)"
+                  class="delete-button">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+            
+            <ion-card-header class="image-info">
+              <ion-text color="medium">
+                <small>{{ getFormattedDate(image.date) }}</small>
+              </ion-text>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && images.length === 0 && !isTakingPhoto" class="empty-state">
+    <ion-icon name="images-outline" color="medium" class="empty-icon"></ion-icon>
+    <ion-text color="medium">
+      <h3>Nenhuma foto ainda</h3>
+      <p>Use os botões acima para tirar fotos ou selecionar da galeria</p>
+    </ion-text>
+  </div>
+</ion-content>
+
+<!-- Delete Confirmation Alert -->
+<ion-alert
+  [isOpen]="isAlertOpen"
+  header="Excluir Foto"
+  message="Tem certeza que deseja excluir esta foto?"
+  [buttons]="alertButtons"
+  (didDismiss)="setOpen(false)">
+</ion-alert>
+
+<!-- Image Options Action Sheet -->
+<ion-action-sheet
+  [isOpen]="isActionSheetOpen"
+  header="Opções da Foto"
+  [buttons]="actionSheetButtons"
+  (didDismiss)="setActionSheetOpen(false)"
+  (ionActionSheetDidDismiss)="onActionSheetResult($event)">
+</ion-action-sheet>

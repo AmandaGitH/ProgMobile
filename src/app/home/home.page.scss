@@ -1,0 +1,190 @@
+:host {
+  --image-card-radius: 12px;
+  --image-height: 150px;
+}
+
+/* Flash Controls Styles */
+.flash-status {
+  margin-bottom: 20px;
+}
+
+.flash-header {
+  padding-bottom: 8px;
+  
+  h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    
+    ion-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.flash-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.flash-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  
+  ion-button {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+/* Resto dos estilos permanecem iguais */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  
+  ion-button {
+    margin: 0;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 16px;
+}
+
+.gallery-section {
+  margin-top: 24px;
+  
+  h2 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.gallery-grid {
+  padding: 0;
+}
+
+.image-card {
+  margin: 0;
+  border-radius: var(--image-card-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.image-container {
+  position: relative;
+  border-radius: var(--image-card-radius) var(--image-card-radius) 0 0;
+  overflow: hidden;
+  background: var(--ion-color-light);
+  cursor: pointer;
+}
+
+.gallery-image {
+  width: 100%;
+  height: var(--image-height);
+  object-fit: cover;
+  display: block;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  padding: 8px;
+  
+  .image-container:hover & {
+    opacity: 1;
+  }
+}
+
+.delete-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --background: rgba(255, 255, 255, 0.9);
+  --color: var(--ion-color-danger);
+  
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+.image-info {
+  padding: 12px;
+  
+  small {
+    font-size: 11px;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  text-align: center;
+  
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  h3 {
+    margin: 0 0 8px 0;
+    font-weight: 500;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  :host {
+    --image-height: 120px;
+  }
+  
+  .action-buttons {
+    gap: 8px;
+  }
+  
+  .flash-buttons {
+    flex-direction: column;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .image-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}

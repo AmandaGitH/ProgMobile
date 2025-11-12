@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Card principal (mantido) -->
+  <ion-card class="perfil-card">
+    <ion-card-header>
+      <div class="avatar-wrap">
+        <ion-avatar class="avatar-xl">
+          <img src="assets/avatar.png" alt="Avatar" />
+        </ion-avatar>
+      </div>
+      <h2 class="nome">{{ saudacao }}, Amanda! 👋</h2>
+      <p class="curso">Ac. Análise e Desenvolvimento de Sistemas</p>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>
+        Desenvolvido na disciplina de Programação para Dispositivos Móveis
+        utilizando <strong>Ionic + Angular</strong>.
+      </p>
+      <p>
+        O app demonstra o uso de recursos nativos como câmera, flash,
+        geolocalização e galeria.
+      </p>
+      <p class="prof">Prof. Robson Freitas — 2025</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mini cards de informações (MANTIDOS) -->
+  <ion-grid class="info-grid">
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="mini-card">
+          <ion-icon name="mail-outline"></ion-icon>
+          <p>amandadev@gmail.com</p>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="mini-card">
+          <ion-icon name="school-outline"></ion-icon>
+          <p>IFPI – Campus Floriano</p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- 🏆 NOVO: Contador de Conquistas -->
+  <h3 class="section-title">Conquistas</h3>
+  <ion-grid class="badges-grid">
+    <ion-row>
+      <ion-col size="4" class="badge-col">
+        <div class="badge">
+          <div class="num">{{ projects }}</div>
+          <div class="label">Projetos</div>
+        </div>
+      </ion-col>
+      <ion-col size="4" class="badge-col">
+        <div class="badge">
+          <div class="num">{{ disciplines }}</div>
+          <div class="label">Disciplinas</div>
+        </div>
+      </ion-col>
+      <ion-col size="4" class="badge-col">
+        <div class="badge">
+          <div class="num">{{ hours }}</div>
+          <div class="label">Horas</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Redes sociais (mantidas) -->
+  <div class="social-icons">
+    <ion-button fill="clear" size="small"
+                (click)="open('https://github.com/AmandaGitH')" aria-label="GitHub">
+      <ion-icon name="logo-github"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" size="small"
+                (click)="open('https://www.linkedin.com/in/amanda-nascimento-4b4541336')"
+                aria-label="LinkedIn">
+      <ion-icon name="logo-linkedin"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" size="small"
+                (click)="open('https://www.instagram.com/amandas.nasc/')"
+                aria-label="Instagram">
+      <ion-icon name="logo-instagram"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Atalho flutuante (mantido) -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" routerLink="/flashlight">
+      <ion-icon name="flash-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

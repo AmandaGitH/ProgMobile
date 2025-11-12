@@ -1,27 +1,75 @@
-
+// app.component.ts
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonRouterLink } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp } from 'ionicons/icons';
+import { 
+  IonApp, 
+  IonRouterOutlet, 
+  IonSplitPane, 
+  IonMenu, 
+  IonContent, 
+  IonList, 
+  IonListHeader, 
+  IonNote, 
+  IonMenuToggle, 
+  IonItem, 
+  IonIcon, 
+  IonLabel,
+  IonAvatar
+} from '@ionic/angular/standalone';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+interface AppPage {
+  title: string;
+  url: string;
+  icon: string;
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterLink, IonRouterOutlet],
+  standalone: true,
+  imports: [
+    IonApp, 
+    IonRouterOutlet, 
+    IonSplitPane, 
+    IonMenu, 
+    IonContent, 
+    IonList, 
+    IonListHeader, 
+    IonNote, 
+    IonMenuToggle, 
+    IonItem, 
+    IonIcon, 
+    IonLabel,
+    IonAvatar,
+    RouterModule,
+    CommonModule // Importante para o @for funcionar
+  ],
 })
 export class AppComponent {
-  public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
+  public appPages: AppPage[] = [
+    {
+      title: 'Home',
+      url: '/perfil',
+      icon: 'home'
+    },
+    {
+      title: 'Lanterna',
+      url: '/flashlight',
+      icon: 'flash'
+    },
+    {
+      title: 'Galeria',
+      url: '/home',
+      icon: 'images'
+    },
+    {
+      title: 'Localização',
+      url: '/location',
+      icon: 'location'
+    }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {
-    addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp });
-  }
+
+  constructor() {}
 }

@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Lanterna</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-content>
+      <ion-text *ngIf="!available">
+        A lanterna não está disponível neste dispositivo / ambiente web.
+      </ion-text>
+
+      <div class="actions" *ngIf="available">
+        <ion-button size="large" (click)="toggle()">
+          <ion-icon slot="start" [name]="isOn ? 'flash-outline' : 'flash-off-outline'"></ion-icon>
+          {{ isOn ? 'Desligar' : 'Ligar' }}
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

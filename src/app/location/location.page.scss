@@ -1,0 +1,306 @@
+// Variáveis
+:root {
+  --uber-black: #000000;
+  --uber-white: #ffffff;
+  --uber-blue: #4285F4;
+  --uber-green: #34C759;
+  --uber-red: #FF3B30;
+  --uber-gray: #8E8E93;
+  --uber-light-gray: #F2F2F7;
+  --uber-dark-gray: #1C1C1E;
+}
+
+.uber-header {
+  ion-toolbar {
+    --background: var(--uber-black);
+    --color: var(--uber-white);
+  }
+  
+  .header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  margin-top: 30px;
+}
+
+.uber-content {
+  --background: transparent;
+  
+  .map-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    
+    .map {
+      height: 100%;
+      width: 100%;
+      background: var(--uber-dark-gray);
+    }
+
+    .floating-controls {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1000;
+
+      ion-button {
+        --border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .tracking-indicator {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+    }
+  }
+
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--uber-white);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.2);
+    transform: translateY(calc(100% - 120px));
+    transition: transform 0.3s ease-out;
+    z-index: 1001;
+    max-height: 85vh;
+
+    &.sheet-expanded {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      padding: 12px 0;
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+
+      .handle-bar {
+        width: 40px;
+        height: 4px;
+        background: #e0e0e0;
+        border-radius: 2px;
+      }
+    }
+
+    .sheet-content {
+      padding: 0 16px 16px;
+      max-height: calc(85vh - 60px);
+      overflow-y: auto;
+
+      .location-search, .loading-state, .error-state {
+        text-align: center;
+        padding: 24px 0;
+
+        ion-icon {
+          font-size: 48px;
+          margin-bottom: 12px;
+          opacity: 0.7;
+        }
+
+        h3 {
+          margin: 0 0 8px 0;
+          font-weight: 600;
+        }
+
+        p {
+          margin: 0 0 16px 0;
+          color: var(--uber-gray);
+          font-size: 14px;
+        }
+      }
+
+      .location-found {
+        .address-header {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          margin-bottom: 16px;
+          padding: 12px 0;
+          border-bottom: 1px solid #f0f0f0;
+
+          ion-icon {
+            font-size: 20px;
+            margin-top: 2px;
+          }
+
+          .address-info {
+            flex: 1;
+
+            h3 {
+              margin: 0 0 4px 0;
+              font-weight: 600;
+            }
+
+            p {
+              margin: 0;
+              color: var(--uber-gray);
+              font-size: 14px;
+            }
+          }
+        }
+
+        .info-grid {
+          padding: 0;
+
+          .info-card {
+            margin: 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+            ion-card-content {
+              text-align: center;
+              padding: 12px;
+
+              ion-icon {
+                font-size: 20px;
+                margin-bottom: 6px;
+              }
+
+              h4 {
+                margin: 0 0 4px 0;
+                font-size: 11px;
+                color: var(--uber-gray);
+                font-weight: 500;
+              }
+
+              .value {
+                margin: 0 0 6px 0;
+                font-size: 16px;
+                font-weight: 600;
+              }
+
+              ion-badge {
+                font-size: 9px;
+                padding: 3px 6px;
+              }
+            }
+          }
+        }
+
+        .action-buttons {
+          margin: 16px 0;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .action-btn {
+            --border-radius: 12px;
+            height: 48px;
+            font-weight: 600;
+            margin: 0;
+          }
+        }
+
+        .expanded-details {
+          margin-top: 16px;
+
+          .details-list {
+            background: transparent;
+
+            ion-item {
+              --padding-start: 0;
+              --inner-padding-end: 0;
+              --background: transparent;
+              margin-bottom: 4px;
+
+              ion-icon {
+                font-size: 18px;
+                margin-right: 12px;
+              }
+
+              ion-label {
+                h3 {
+                  margin: 2px 0 0 0;
+                  font-weight: 600;
+                  font-size: 14px;
+                }
+
+                p {
+                  margin: 0;
+                  font-size: 11px;
+                  color: var(--uber-gray);
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Marcador personalizado mínimo
+.user-marker {
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  .pulse-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--uber-blue);
+    border-radius: 50%;
+    animation: pulse-ring 2s infinite;
+  }
+
+  .marker-center {
+    width: 18px;
+    height: 18px;
+    background: var(--uber-blue);
+    border-radius: 50%;
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+
+    ion-icon {
+      color: black;
+      font-size: 10px;
+    }
+  }
+}
+.marker-icon{
+  font-size: 30px;
+}
+// Animações essenciais apenas
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.user-location-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+// Dark mode simplificado
+@media (prefers-color-scheme: dark) {
+  .uber-content .bottom-sheet {
+    background: #1C1C1E;
+    
+    .sheet-handle .handle-bar {
+      background: #333;
+    }
+  }
+}

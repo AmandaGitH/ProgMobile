@@ -35,8 +35,8 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": [],
+            "styles": ["src/global.scss", "src/theme/variables.scss","node_modules/leaflet/dist/leaflet.css"],
+            "scripts": ["node_modules/leaflet/dist/leaflet.js"],
             "browser": "src/main.ts"
           },
           "configurations": {
@@ -49,8 +49,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "16kb"
                 }
               ],
               "fileReplacements": [
@@ -129,7 +129,10 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": [
+      "@ionic/angular-toolkit"
+    ],
+    "analytics": "c927b83a-5abf-449c-99dc-c92f461ecff8"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
