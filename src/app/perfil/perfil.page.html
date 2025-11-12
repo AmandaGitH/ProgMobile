@@ -9,7 +9,12 @@
 
 <ion-content class="ion-padding">
 
-  <!-- Card principal (mantido) -->
+  <!-- pull-to-refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="reload($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Card principal -->
   <ion-card class="perfil-card">
     <ion-card-header>
       <div class="avatar-wrap">
@@ -34,7 +39,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Mini cards de informações (MANTIDOS) -->
+  <!-- Mini cards de informações -->
   <ion-grid class="info-grid">
     <ion-row>
       <ion-col size="6">
@@ -52,7 +57,26 @@
     </ion-row>
   </ion-grid>
 
-  <!-- 🏆 NOVO: Contador de Conquistas -->
+  <!-- ✅ LEMBRETES (com botão + adicionar tarefa) -->
+  <ion-card class="todo-card">
+    <ion-card-header>
+      <div class="todo-header">
+        <span>Lembretes</span>
+        <ion-button size="small" fill="outline" (click)="addTask()">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          + adicionar tarefa
+        </ion-button>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none" *ngFor="let s of steps">
+        <ion-checkbox slot="start" [(ngModel)]="s.done" (ionChange)="saveSteps()"></ion-checkbox>
+        <ion-label>{{ s.label }}</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Conquistas -->
   <h3 class="section-title">Conquistas</h3>
   <ion-grid class="badges-grid">
     <ion-row>
@@ -77,7 +101,12 @@
     </ion-row>
   </ion-grid>
 
-  <!-- Redes sociais (mantidas) -->
+  <!-- Botão Compartilhar perfil -->
+  <div class="share-wrap">
+    <ion-button size="small" fill="outline" (click)="share()">Compartilhar perfil</ion-button>
+  </div>
+
+  <!-- Redes sociais -->
   <div class="social-icons">
     <ion-button fill="clear" size="small"
                 (click)="open('https://github.com/AmandaGitH')" aria-label="GitHub">
@@ -89,13 +118,12 @@
       <ion-icon name="logo-linkedin"></ion-icon>
     </ion-button>
     <ion-button fill="clear" size="small"
-                (click)="open('https://www.instagram.com/amandas.nasc/')"
-                aria-label="Instagram">
+                (click)="open('https://www.instagram.com/amandas.nasc/')" aria-label="Instagram">
       <ion-icon name="logo-instagram"></ion-icon>
     </ion-button>
   </div>
 
-  <!-- Atalho flutuante (mantido) -->
+  <!-- FAB lanterna -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="primary" routerLink="/flashlight">
       <ion-icon name="flash-outline"></ion-icon>

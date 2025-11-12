@@ -5,113 +5,73 @@
   background: #1e1e1e;
   padding-bottom: 10px;
 }
-
-.avatar-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-}
-
+.avatar-wrap { display: flex; justify-content: center; margin-top: 12px; }
 .avatar-xl {
-  width: 130px;
-  height: 130px;
-  border: 5px solid var(--ion-color-primary);
-  border-radius: 50%;
-  overflow: hidden;
+  width: 130px; height: 130px; border: 5px solid var(--ion-color-primary);
+  border-radius: 50%; overflow: hidden;
   box-shadow: 0 0 15px var(--ion-color-primary);
   animation: pulse 3s infinite;
 }
-
 @keyframes pulse {
   0% { box-shadow: 0 0 15px var(--ion-color-primary); }
   50% { box-shadow: 0 0 25px var(--ion-color-primary-tint); }
   100% { box-shadow: 0 0 15px var(--ion-color-primary); }
 }
-
 .nome { text-align: center; margin: 10px 0 0; font-weight: 700; color: #eaeaea; }
 .curso { text-align: center; margin: 2px 0 8px; opacity: .7; color: #ccc; }
 .prof  { margin-top: 10px; font-style: italic; opacity: .8; }
 
-/* Mini-cards (mantidos) */
+/* Mini-cards info */
 .info-grid { margin-top: 16px; }
 .mini-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: #242424;
-  border-radius: 15px;
-  padding: 14px;
-  ion-icon {
-    font-size: 28px;
-    color: var(--ion-color-primary);
-    margin-bottom: 6px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; background: #242424; border-radius: 15px; padding: 14px;
+  ion-icon { font-size: 20px; color: var(--ion-color-primary); margin-bottom: 6px; }
+  p { font-size: 13px; color: #ddd; margin: 0; }
+}
+
+/* Lembretes */
+.todo-card {
+  background: #1f1f1f;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0,0,0,.22);
+  margin-top: 10px;
+
+  ion-card-header { color: #eaeaea; }
+
+  .todo-header{
+    display:flex; align-items:center; justify-content:space-between;
+    font-weight:700; padding: 2px 2px 0 2px;
   }
-  p {
-    font-size: 13px;
-    color: #ddd;
-    margin: 0;
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 2px;
+    --inner-padding-end: 0;
+    ion-label { color: #ddd; }
   }
 }
 
 /* Título de seção */
-.section-title {
-  margin: 18px 6px 10px;
-  font-size: 16px;
-  color: #ddd;
-  font-weight: 600;
-}
+.section-title { margin: 18px 6px 10px; font-size: 16px; color: #ddd; font-weight: 600; }
 
-/* Conquistas (NOVO) */
+/* Conquistas */
 .badges-grid { margin-top: 6px; }
 .badge-col { display: flex; justify-content: center; }
-
 .badge {
-  width: 100%;
-  max-width: 130px;
-  text-align: center;
-  background: #242424;
-  border-radius: 16px;
-  padding: 12px 8px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.18);
+  width: 100%; max-width: 130px; text-align: center; background: #242424;
+  border-radius: 16px; padding: 12px 8px; box-shadow: 0 6px 14px rgba(0,0,0,.18);
 }
+.badge .num { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.badge .label { font-size: 12px; letter-spacing: .3px; color: #cfcfcf; }
 
-.badge .num {
-  font-size: 26px;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 4px;
-}
+/* Botão compartilhar */
+.share-wrap{ display:flex; justify-content:center; margin: 6px 0 8px; }
 
-.badge .label {
-  font-size: 12px;
-  letter-spacing: .3px;
-  color: #cfcfcf;
-}
-
-/* Redes sociais (mantidas) */
+/* Redes sociais */
 .social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin: 20px 0 60px;
-
-  ion-button {
-    --padding-start: 8px;
-    --padding-end: 8px;
-    --ripple-color: var(--ion-color-primary-tint);
-    border-radius: 12px;
-  }
-
-  ion-icon {
-    font-size: 28px;
-    color: var(--ion-color-primary);
-    transition: transform .2s ease, color .2s ease;
-  }
-
-  ion-button:hover ion-icon {
-    transform: scale(1.15);
-    color: var(--ion-color-primary-tint);
-  }
+  display: flex; justify-content: center; gap: 6px; margin: 14px 0 60px;
+  ion-button { --padding-start: 8px; --padding-end: 8px; --ripple-color: var(--ion-color-primary-tint); border-radius: 12px; }
+  ion-icon { font-size: 28px; color: var(--ion-color-primary); transition: transform .2s, color .2s; }
+  ion-button:hover ion-icon { transform: scale(1.15); color: var(--ion-color-primary-tint); }
 }

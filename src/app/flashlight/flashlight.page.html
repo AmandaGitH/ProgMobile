@@ -8,18 +8,70 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-content>
-      <ion-text *ngIf="!available">
-        A lanterna não está disponível neste dispositivo / ambiente web.
-      </ion-text>
 
-      <div class="actions" *ngIf="available">
-        <ion-button size="large" (click)="toggle()">
-          <ion-icon slot="start" [name]="isOn ? 'flash-outline' : 'flash-off-outline'"></ion-icon>
-          {{ isOn ? 'Desligar' : 'Ligar' }}
+  <ion-card class="torch-card">
+    <ion-card-content>
+
+      <!-- STATUS -->
+      <div class="status-row">
+        <ion-chip [color]="isOn ? 'success' : 'medium'" class="status-chip">
+          <ion-icon [name]="isOn ? 'flash-outline' : 'flash-off-outline'"></ion-icon>
+          <ion-text>{{ isOn ? 'Ligada' : 'Desligada' }}</ion-text>
+        </ion-chip>
+
+        <ion-chip color="tertiary" *ngIf="strobeOn" class="status-chip">
+          <ion-icon name="pulse-outline"></ion-icon>
+          <ion-text>Pisca</ion-text>
+        </ion-chip>
+      </div>
+
+      <!-- BOTÃO CIRCULAR -->
+      <div class="center">
+        <button class="torch-btn" [class.on]="isOn" (click)="toggle()" [disabled]="!available">
+          <ion-icon [name]="isOn ? 'flash-outline' : 'flash-off-outline'"></ion-icon>
+          <span>{{ isOn ? 'DESLIGAR' : 'LIGAR' }}</span>
+        </button>
+      </div>
+
+      <!-- CONTROLES -->
+      <div class="actions">
+        <ion-button fill="outline" color="medium" (click)="turnOff()" [disabled]="!available || !isOn">
+          Desligar
+        </ion-button>
+
+        <ion-button fill="solid" color="secondary"
+                    (click)="strobeOn ? stopStrobe() : startStrobe()"
+                    [disabled]="!available">
+          {{ strobeOn ? 'Parar Pisca' : 'Iniciar Pisca' }}
         </ion-button>
       </div>
+
+      <!-- VELOCIDADE DO PISCA -->
+      <div class="range-wrap">
+        <label>Velocidade do pisca</label>
+        <ion-range min="120" max="700" step="10"
+                   [value]="strobeSpeed"
+                   (ionChange)="onSpeedChange($event)">
+        </ion-range>
+        <small>{{ strobeSpeed }} ms</small>
+      </div>
+
+      <!-- AVISO DE DISPONIBILIDADE / NAVEGADOR -->
+      <div class="tip" *ngIf="!available">
+        <ion-icon name="warning-outline"></ion-icon>
+        <span>
+          A lanterna pode não estar disponível no navegador. Teste no dispositivo físico.
+        </span>
+      </div>
+
+      <div class="tip">
+        <ion-icon name="warning-outline"></ion-icon>
+        <span>
+          O uso contínuo do flash pode aquecer o aparelho e consumir bateria.
+        </span>
+      </div>
+
     </ion-card-content>
   </ion-card>
+
 </ion-content>

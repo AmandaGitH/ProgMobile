@@ -1,5 +1,92 @@
+.torch-card {
+  border-radius: 18px;
+  background: #1e1e1e;
+  box-shadow: 0 8px 22px rgba(0,0,0,.25);
+}
+
+.status-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 14px;
+
+  .status-chip {
+    ion-icon { margin-right: 6px; }
+    ion-text { font-weight: 600; }
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 16px;
+}
+
+/* Botão circular grande */
+.torch-btn {
+  width: 170px;
+  height: 170px;
+  border-radius: 999px;
+  border: none;
+  background: radial-gradient(140px 140px at 50% 45%, #6a4cfe 0%, #5e43e0 60%, #3a2bb5 100%);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(106, 76, 254, .35);
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+
+  ion-icon { font-size: 44px; }
+  span { font-weight: 700; letter-spacing: .6px; }
+
+  &:active { transform: scale(.98); }
+  &:disabled { filter: grayscale(0.6) opacity(.7); cursor: not-allowed; }
+}
+
+/* Efeito ligado (glow/pulse) */
+.torch-btn.on {
+  animation: glow 2.2s ease-in-out infinite;
+  box-shadow: 0 16px 40px rgba(106, 76, 254, .55);
+}
+@keyframes glow {
+  0%   { filter: drop-shadow(0 0 10px rgba(106,76,254,.4)); }
+  50%  { filter: drop-shadow(0 0 24px rgba(106,76,254,.75)); }
+  100% { filter: drop-shadow(0 0 10px rgba(106,76,254,.4)); }
+}
+
 .actions {
   display: flex;
   justify-content: center;
-  padding: 12px 0;
+  gap: 12px;
+  margin-bottom: 6px;
+
+  ion-button {
+    min-width: 130px;
+    --border-color: var(--ion-color-primary);
+  }
+}
+
+.range-wrap {
+  margin: 6px 4px 10px;
+  display: grid;
+  justify-items: center;
+
+  label {
+    color: #ddd;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  small { color: #aaa; }
+}
+
+.tip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #bdbdbd;
+  font-size: 13px;
+  margin-top: 8px;
+
+  ion-icon { color: var(--ion-color-warning); }
 }
