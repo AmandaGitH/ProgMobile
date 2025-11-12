@@ -50,6 +50,11 @@
     --inner-padding-end: 0;
     ion-label { color: #ddd; }
   }
+
+  /* botão de apagar ao deslizar */
+  ion-item-option[color="danger"] {
+    --color: #fff;
+  }
 }
 
 /* Título de seção */

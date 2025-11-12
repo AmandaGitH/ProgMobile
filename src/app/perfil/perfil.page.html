@@ -57,7 +57,7 @@
     </ion-row>
   </ion-grid>
 
-  <!-- ✅ LEMBRETES (com botão + adicionar tarefa) -->
+  <!-- ✅ LEMBRETES (com + adicionar e excluir por deslize) -->
   <ion-card class="todo-card">
     <ion-card-header>
       <div class="todo-header">
@@ -69,10 +69,18 @@
       </div>
     </ion-card-header>
     <ion-card-content>
-      <ion-item lines="none" *ngFor="let s of steps">
-        <ion-checkbox slot="start" [(ngModel)]="s.done" (ionChange)="saveSteps()"></ion-checkbox>
-        <ion-label>{{ s.label }}</ion-label>
-      </ion-item>
+      <!-- item deslizável: arraste para a esquerda para ver a lixeira -->
+      <ion-item-sliding *ngFor="let s of steps; let i = index" #sliding>
+        <ion-item lines="none">
+          <ion-checkbox slot="start" [(ngModel)]="s.done" (ionChange)="saveSteps()"></ion-checkbox>
+          <ion-label>{{ s.label }}</ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="deleteStep(i, sliding)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-card-content>
   </ion-card>
 

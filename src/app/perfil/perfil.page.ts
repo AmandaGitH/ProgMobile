@@ -3,14 +3,15 @@ import {
   IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton,
   IonContent, IonCard, IonCardHeader, IonCardContent, IonAvatar,
   IonGrid, IonRow, IonCol, IonIcon, IonFab, IonFabButton, IonButton,
-  IonRefresher, IonRefresherContent, IonItem, IonCheckbox, IonLabel
+  IonRefresher, IonRefresherContent, IonItem, IonCheckbox, IonLabel,
+  IonItemSliding, IonItemOptions, IonItemOption
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import {
   flashOutline, logoGithub, logoLinkedin, logoInstagram,
-  mailOutline, schoolOutline, addCircleOutline
+  mailOutline, schoolOutline, addCircleOutline, trashOutline
 } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Capacitor } from '@capacitor/core';
@@ -31,7 +32,8 @@ const STEPS_KEY = 'perfil:steps';
     IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton,
     IonContent, IonCard, IonCardHeader, IonCardContent, IonAvatar,
     IonGrid, IonRow, IonCol, IonIcon, IonFab, IonFabButton, IonButton,
-    IonRefresher, IonRefresherContent, IonItem, IonCheckbox, IonLabel
+    IonRefresher, IonRefresherContent, IonItem, IonCheckbox, IonLabel,
+    IonItemSliding, IonItemOptions, IonItemOption
   ]
 })
 export class PerfilPage implements OnInit, AfterViewInit {
@@ -60,7 +62,7 @@ export class PerfilPage implements OnInit, AfterViewInit {
   ) {
     addIcons({
       flashOutline, logoGithub, logoLinkedin, logoInstagram,
-      mailOutline, schoolOutline, addCircleOutline
+      mailOutline, schoolOutline, addCircleOutline, trashOutline
     });
     const h = new Date().getHours();
     this.saudacao = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
@@ -144,11 +146,9 @@ export class PerfilPage implements OnInit, AfterViewInit {
       try {
         this.steps = JSON.parse(r.value);
         return;
-      } catch {
-        // continua para fallback
-      }
+      } catch { /* fallback abaixo */ }
     }
-    // Fallback: quem já tinha o formato antigo (por chave)
+    // Fallback: quem já tinha o formato antigo (por chave individual)
     const legacyLoaded = await Promise.all(
       this.steps.map(async s => {
         const v = await Preferences.get({ key: `perfil:${s.key}` });
@@ -156,16 +156,14 @@ export class PerfilPage implements OnInit, AfterViewInit {
       })
     );
     this.steps = legacyLoaded;
-    await this.saveSteps(); // migra para o formato novo
+    await this.saveSteps();
   }
 
-  /** adicionar nova tarefa via Alert */
+  /** adicionar nova tarefa */
   async addTask() {
     const alert = await this.alert.create({
       header: 'Novo lembrete',
-      inputs: [
-        { type: 'text', name: 'label', placeholder: 'Descreva a tarefa...' }
-      ],
+      inputs: [{ type: 'text', name: 'label', placeholder: 'Descreva a tarefa...' }],
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
@@ -183,5 +181,15 @@ export class PerfilPage implements OnInit, AfterViewInit {
       ]
     });
     await alert.present();
+  }
+
+  /** excluir tarefa (via deslizar ou clique no botão) */
+  async deleteStep(index: number, sliding?: any) {
+    const removed = this.steps.splice(index, 1);
+    await this.saveSteps();
+    if (sliding?.close) sliding.close();
+    if (removed.length) {
+      (await this.toast.create({ message: 'Lembrete excluído', duration: 1000, color: 'danger'})).present();
+    }
   }
 }
